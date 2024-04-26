@@ -17,11 +17,6 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    // Disable vsync
-    if (!SDL_SetHint(SDL_HINT_RENDER_VSYNC, "0")) {
-        printf("Warning: Unable to disable VSync! SDL_Error: %s\n", SDL_GetError());
-    }
-
     // Create window
     window = SDL_CreateWindow("Black&White", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, windowWidth, windowHeight, SDL_WINDOW_SHOWN);
     if (window == NULL) {
@@ -30,7 +25,7 @@ int main(int argc, char* argv[]) {
     }
 
     // Create renderer
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED );
     if (renderer == NULL) {
         printf("Renderer could not be created! SDL_Error: %s\n", SDL_GetError());
         return 1;
@@ -66,14 +61,6 @@ int main(int argc, char* argv[]) {
                 // Close program on Esc key press
                 if (event.key.keysym.sym == SDLK_ESCAPE) {
                     running = 0;
-                }
-            }
-            if (fullscreen && event.type == SDL_MOUSEBUTTONDOWN && (SDL_GetGlobalMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT))) {
-                int x, y;
-                SDL_GetMouseState(&x, &y);
-                if (x < 0 || y < 0 || x >= windowWidth || y >= windowHeight) {
-                    // Minimize window if clicked outside
-                    SDL_MinimizeWindow(window);
                 }
             }
         }
